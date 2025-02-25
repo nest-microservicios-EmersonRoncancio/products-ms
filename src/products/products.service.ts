@@ -27,10 +27,12 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
   async findAll(paginationDto: PaginationDto) {
     const data = await this.product.findMany({
+      where: {
+        available: true,
+      },
       skip: ((paginationDto.page ?? 1) - 1) * (paginationDto.limit ?? 10),
       take: paginationDto.limit,
     });
-    console.log(data);
     return {
       page: paginationDto.page,
       limit: paginationDto.limit,
@@ -42,6 +44,7 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     const data = await this.product.findUnique({
       where: {
         id: id,
+        available: true,
       },
     });
     if (!data) throw new NotFoundException(`Product with id ${id} not found`);
