@@ -5,14 +5,14 @@ const envVarsSchema = joi
   .object({
     PORT: joi.number().required(),
     DATABASE_URL: joi.string().required(),
-    NATS_SERVERS: joi.array().items(joi.string()).required(),
+    NATS_SERVER: joi.array().items(joi.string()).required(),
   })
   .unknown(true);
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const { error, value } = envVarsSchema.validate({
   ...process.env,
-  NATS_SERVERS: process.env.NATS_SERVERS?.split(','),
+  NATS_SERVER: process.env.NATS_SERVER?.split(','),
 });
 
 if (error) {
@@ -22,7 +22,7 @@ if (error) {
 interface Env {
   PORT: number;
   DATABASE_URL: string;
-  NATS_SERVERS: string[];
+  NATS_SERVER: string[];
 }
 
 const env: Env = value as Env;
@@ -30,5 +30,5 @@ const env: Env = value as Env;
 export const envs = {
   PORT: env?.PORT,
   DATABASE_URL: env?.DATABASE_URL,
-  NATS_SERVERS: env?.NATS_SERVERS,
+  NATS_SERVER: env?.NATS_SERVER,
 };
